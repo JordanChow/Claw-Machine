@@ -150,9 +150,13 @@ void objectPickup(int &scanx, int &scany, int powery, int &powerx, int color)
 	time1[T1] = 0;
 	while(time1[T1] < 3000) // to be changed after testing
 	{
-		motor[motorD] = 20;
+		motor[motorD] = -20;
   }
   motor[motorD] = 0;
+
+  motor[motorC] = -15;
+	wait1Msec(1500);
+	motor[motorC] = 0;
 }
 
 void objectTransport(int scanx, int scany)
@@ -177,8 +181,21 @@ void objectTransport(int scanx, int scany)
 	motor[motorA] = 0;
 
 	motor[motorD] = 20;
-	wait1Msec(2000);
+	wait1Msec(3000);
 	motor[motorD] = 0;
+
+	if (SensorValue[S2] != 1)
+	{
+		motor[motorC] = 15;
+		wait1Msec(1500);
+		motor[motorC] = 0;
+		objectPickup(scanx, scany, powery, powerx, colourChosenNum);
+		if(SensorValue[S2] != 1)
+		{
+			displayString(8, "Object fell out of bounds");
+			wait1Msec(5000);
+			eraseDisplay();
+		}
 }
 
 bool playAgain()
