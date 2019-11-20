@@ -1,4 +1,6 @@
-Given a group of 4, this is the project we came up with when designing our Autonomous Claw Machine
+Given a group of 4, this is the project we came up with when designing our Mechatronic System
+
+I present: My Autonomous Claw Machine!
 
 The project was made to have two modes, Autonomous retrieval and racing mode
 
