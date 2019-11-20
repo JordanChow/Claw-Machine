@@ -183,19 +183,6 @@ void objectTransport(int scanx, int scany)
 	motor[motorD] = 20;
 	wait1Msec(3000);
 	motor[motorD] = 0;
-
-	if (SensorValue[S2] != 1)
-	{
-		motor[motorC] = 15;
-		wait1Msec(1500);
-		motor[motorC] = 0;
-		objectPickup(scanx, scany, powery, powerx, colourChosenNum);
-		if(SensorValue[S2] != 1)
-		{
-			displayString(8, "Object fell out of bounds");
-			wait1Msec(5000);
-			eraseDisplay();
-		}
 }
 
 bool playAgain()
@@ -207,14 +194,29 @@ bool playAgain()
 	return getButtonPress(buttonEnter);
 }
 
-//bool gameMode()// returns true if the user wants to race the robot
-//{
-//	displayString(8, "Would you like to play again?");
-//	displayString(9, "Press enter for yes and");
-//	displayString(10, "any other button for no");
+bool gameMode()// returns true if the user wants to race the robot
+{
+	displayString(8, "Would you like to play again?");
+	displayString(9, "Press enter for yes and");
+	displayString(10, "any other button for no");
 
-//	return getButtonPress(buttonEnter);
-//}
+	return getButtonPress(buttonEnter);
+}
+
+void controls()
+{
+	eraseDisplay();
+	displayString(6, "The controls are as follows");
+	displayString(7, "Up and Down buttons control y");
+	displayString(8, "axis and right and left for x");
+	displayString(9, "Once centred above the object,");
+	displayString(10, "press the enter button once, then");
+	displayString(11, "the up and down buttons will raise");
+	displayString(12, "and lower the claw, the right button");
+	displayString(13, "will close the claw, and the left open");
+	displayString(14, "GLHF");
+}
+
 
 task main()
 {
@@ -230,15 +232,19 @@ task main()
 	int scanx = 0, scany = 0, powery = 20, powerx = 20;
   int colourChosenNum = 0;
 	int colours[COLOURSIZE] = {1,6,5,2};
-	bool plays = true, race = false; // race false signifies that the "race" game mode has not been selected
+	bool plays = true;
   bool coloursPicked[COLOURSIZE] = {false,false,false,false};
 
   while(SensorValue[S3] > 100)
   {}
 
-  displayString(1,"Please select a colour: ");
-  displayString(2,"Black | White | Red | Blue");
-  displayString(3,"Selected Colour : Black");
+	bool race = gameMode();// race false signifies that the "race" game mode has not been selected
+
+  if (race == false)
+  {
+  	displayString(1,"Please select a colour: ");
+  	displayString(2,"Black | White | Red | Blue");
+  	displayString(3,"Selected Colour : Black");
 
 		while (colourChosenNum != 404 && plays == 1)
 		{
@@ -251,6 +257,29 @@ task main()
 		  }
 			objectPickup(scanx, scany, powery, powerx, colourChosenNum);
 			objectTransport(scanx, scany);
+			if (SensorValue[S2] != 1)
+			{
+				motor[motorC] = 15;
+				wait1Msec(1500);
+				motor[motorC] = 0;
+				objectPickup(scanx, scany, powery, powerx, colourChosenNum);
+				if(SensorValue[S2] != 1)
+				{
+					displayString(8, "Object fell out of bounds");
+					wait1Msec(5000);
+					eraseDisplay();
+				}
+			}
 			plays = playAgain();
 		}
+	}
+
+	else
+	{
+		displayString(1,"Please select a colour: ");
+ 	 	displayString(2,"Black | White | Red | Blue");
+  	displayString(3,"Selected Colour : Black");
+  	colourChosenNum = startup(colours, coloursPicked);
+  	controls();
+	}
 }
