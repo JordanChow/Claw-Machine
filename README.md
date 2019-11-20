@@ -1,4 +1,6 @@
-Given a group of 4, this is the project we came up with when designing our Autonomous Claw Machine
+Given a group of 4, this is the project we came up with when designing our Mechatronic System
+
+I present: My Autonomous Claw Machine!
 
 The project was made to have two modes, Autonomous retrieval and racing mode
 
@@ -8,7 +10,7 @@ If the user has a better time, they will be rewarded with an encouraging message
 
 Autonomous mode simply prompts the user for a colour, then finds the colour. It will prompt the user to play again until it retrieves all the objects within its bounds.
 
-Overall, a project used to practice the design and implementation of a Mechatronic System, uses RobotC, a C based language with many similarities to C++ (except that it is not object-oriented), and C++
+Overall, a project used to practice the design and implementation of a Mechatronic System, uses RobotC (a C based language with many similarities to C++ except that it is not object-oriented), and C++
 
 
 
