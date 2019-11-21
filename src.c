@@ -1,6 +1,6 @@
 
 const int COLOURSIZE = 4;
-const float xMax = 15 * 360 / (4 * PI);
+const float xMax = 16 * 360 / (4 * PI);
 const float yMax = 6 * 360 / (4 * PI);
 // radius of wheel = 2cm
 
@@ -215,7 +215,7 @@ bool playAgain()
 		return false;
 }
 
-bool gameMode()// returns true if the user wants to race the robot
+int gameMode()// returns true if the user wants to race the robot
 {
 	displayString(8, "Would you like to race?");
 	displayString(9, "Press enter for yes and");
@@ -223,10 +223,10 @@ bool gameMode()// returns true if the user wants to race the robot
 
 	if (getButtonPress(buttonEnter) == true)
 	{
-		return true;
+		return 1;
 	}
 	else
-		return false;
+		return 0;
 }
 
 int controls()
@@ -344,9 +344,9 @@ task main()
   while(SensorValue[S3] > 100)
   {}
 
-	bool race = gameMode();// race false signifies that the "race" game mode has not been selected
+	int race = gameMode();// race false signifies that the "race" game mode has not been selected
 
-  if (race == false)
+  if (race == 0)
   {
   	displayString(1,"Please select a colour: ");
   	displayString(2,"Black | White | Red | Blue");
