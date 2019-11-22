@@ -137,8 +137,19 @@ void objectPickup(int &scanx, int &scany, int powery, int &powerx, int color, bo
 				motor[motorA] = powerx;
 				if(SensorValue[S1] == color)
 				{
-					//wait1Msec(1000);
 					isThere = true;
+					if (row % 2 == 0)
+					{
+						motor[motorA] = -1*powerx;
+						wait1Msec(1000);
+						motor[motorA] = 0;
+					}
+					else
+					{
+						motor[motorA] = powerx;
+						wait1Msec(1000);
+						motor[motorA] = 0;
+					}
 				}
 			}
 
@@ -147,29 +158,24 @@ void objectPickup(int &scanx, int &scany, int powery, int &powerx, int color, bo
 			scanx = (4 * PI * nMotorEncoder[motorA]) / 360;
 			scany += 4.5;
 		}
+		row++;
 	}
 
 	if (isThere == true)
 	{
-		time1[T1] = 0;
-		while (time1[T1] < 1000)
-		{
-			motor[motorA] = -1*powerx;
-		}
-		motor[motorA] = 0;
 		motor[motorC] = -15;
 		wait1Msec(2000);
 		motor[motorC] = 0;
 
 		time1[T1] = 0;
-		while(time1[T1] < 6000) // to be changed after testing
+		while(time1[T1] < 4500) // to be changed after testing
 		{
 			motor[motorD] = -20;
 	  }
 	  motor[motorD] = 0;
 
 	  motor[motorC] = 15;
-		wait1Msec(2000);
+		wait1Msec(5000);
 		motor[motorC] = 0;
 	}
 
@@ -205,7 +211,7 @@ void objectTransport(int scanx, int scany, float &yTogo, float &xTogo, bool isTh
 		motor[motorA] = 0;
 
 		motor[motorD] = 20;
-		wait1Msec(6000);
+		wait1Msec(4500);
 		motor[motorD] = 0;
 	}
 }
@@ -226,6 +232,10 @@ void reset(float yTogo, float xTogo)
 		motor[motorA] = 20;
 	}
 	motor[motorA] = 0;
+
+	motor[motorD] = -15;
+	wait1Msec(5000);
+	motor[motorD] = 0;
 }
 
 bool playAgain()
@@ -255,6 +265,23 @@ bool gameMode()// returns true if the user wants to race the robot
 	else
 		return false;
 }
+
+bool isSuccesful()
+{
+	bool checks = false;
+	time1[T1] = 0;
+	while (!getButtonPress(buttonAny))
+	{
+		if (SensorValue[S2] == true)
+			checks = true;
+		if(time1[T1] > 10000)
+		{
+			checks = false;
+		}
+	}
+	return checks;
+}
+
 
 int controls()
 {
@@ -372,83 +399,75 @@ task main()
   while(SensorValue[S3] > 100)
   {}
 
-  while(!getButtonPress(buttonAny))
-  {
-  	race = gameMode();// race false signifies that the "race" game mode has not been selected
-  }
-
-	//bool race = gameMode();// race false signifies that the "race" game mode has not been selected
-
-  if (race == false)
-  {
-  	displayString(1,"Please select a colour: ");
-  	displayString(2,"Black | White | Red | Blue");
-  	displayString(3,"Selected Colour : Black");
-
-		while (colourChosenNum != 404 && plays == true)
-		{
-			colourChosenNum = startup(colours, coloursPicked);
-			while(colourChosenNum == 400)
-		  {
-		    wait1Msec(1000);
-		    int newNum = startup(colours,coloursPicked);
-		    colourChosenNum = newNum;
-		  }
-			objectPickup(scanx, scany, powery, powerx, colourChosenNum, isThere);
-			objectTransport(scanx, scany, yTogo, xTogo, isThere);
-			//if (SensorValue[S2] != 1)
-			//{
-			//	motor[motorC] = 15;
-			//	wait1Msec(1500);
-			//	motor[motorC] = 0;
-			//	objectPickup(scanx, scany, powery, powerx, colourChosenNum, isThere);
-			//	if(SensorValue[S2] != 1)
-			//	{
-			//		reset(yTogo, xTogo);
-			//		displayString(8, "Object fell out of bounds");
-			//		wait1Msec(5000);
-			//		eraseDisplay();
-			//	}
-
-			//	else
-			//		objectTransport(scanx, scany, yTogo, xTogo, isThere);
-			//}
-			if (playAgain() == false)
-				plays = false;
-		}
-	}
-
-	else
+  while (colourChosenNum != 404 || plays == true)
 	{
-		displayString(1,"Please select a colour: ");
- 	 	displayString(2,"Black | White | Red | Blue");
-  	displayString(3,"Selected Colour : Black");
-  	colourChosenNum = startup(colours, coloursPicked);
-  	float userTime = controls()/1000.0;
-  	eraseDisplay();
-  	displayString(8, "Your time is %f", userTime);
-  	displayString(9, "Please return the object");
-  	wait1Msec(20000);
-  	eraseDisplay();
-  	colourChosenNum = startup(colours, coloursPicked);
-		objectPickup(scanx, scany, powery, powerx, colourChosenNum, isThere);
-		objectTransport(scanx, scany, yTogo, xTogo, isThere);
-		if (SensorValue[S2] != 1)
-		{
-			motor[motorC] = 15;
-			wait1Msec(1500);
-			motor[motorC] = 0;
-			objectPickup(scanx, scany, powery, powerx, colourChosenNum, isThere);
-			if(SensorValue[S2] != 1)
+	  while(!getButtonPress(buttonAny))
+	  {
+	  	race = gameMode();// race false signifies that the "race" game mode has not been selected
+	  }
+
+	  if (race == false)
+	  {
+	  	displayString(1,"Please select a colour: ");
+	  	displayString(2,"Black | White | Red | Blue");
+	  	displayString(3,"Selected Colour : Black");
+
+			//while (colourChosenNum != 404 || plays == true)
+			//{
+				colourChosenNum = startup(colours, coloursPicked);
+				while(colourChosenNum == 400)
+			  {
+			    wait1Msec(1000);
+			    int newNum = startup(colours,coloursPicked);
+			    colourChosenNum = newNum;
+			  }
+				objectPickup(scanx, scany, powery, powerx, colourChosenNum, isThere);
+				objectTransport(scanx, scany, yTogo, xTogo, isThere);
+				eraseDisplay();
+				displayString(8, "Is the object in the drop");
+				displayString(9, "bin (hit touch sensor");
+				displayString(10, "if yes, any button for no");
+				displayString(11, "then hit any button)");
+				if(isSuccesful() == false)
 				{
 					reset(yTogo, xTogo);
-					displayString(8, "Object fell out of bounds");
-					wait1Msec(5000);
-					eraseDisplay();
 				}
+				plays = playAgain();
+			//}
+		}
 
-			else
-				objectTransport(scanx, scany, yTogo, xTogo, isThere);
+		else
+		{
+			displayString(1,"Please select a colour: ");
+	 	 	displayString(2,"Black | White | Red | Blue");
+	  	displayString(3,"Selected Colour : Black");
+	  	colourChosenNum = startup(colours, coloursPicked);
+	  	float userTime = controls()/1000.0;
+	  	eraseDisplay();
+	  	displayString(8, "Your time is %f", userTime);
+	  	displayString(9, "Please return the object");
+	  	wait1Msec(20000);
+	  	eraseDisplay();
+	  	colourChosenNum = startup(colours, coloursPicked);
+			objectPickup(scanx, scany, powery, powerx, colourChosenNum, isThere);
+			objectTransport(scanx, scany, yTogo, xTogo, isThere);
+			if (SensorValue[S2] != 1)
+			{
+				motor[motorC] = 15;
+				wait1Msec(1500);
+				motor[motorC] = 0;
+				objectPickup(scanx, scany, powery, powerx, colourChosenNum, isThere);
+				if(SensorValue[S2] != 1)
+					{
+						reset(yTogo, xTogo);
+						displayString(8, "Object fell out of bounds");
+						wait1Msec(5000);
+						eraseDisplay();
+					}
+
+				else
+					objectTransport(scanx, scany, yTogo, xTogo, isThere);
+			}
 		}
 	}
 }
