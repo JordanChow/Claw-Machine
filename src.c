@@ -213,6 +213,10 @@ void objectTransport(int scanx, int scany, float &yTogo, float &xTogo, bool isTh
 		motor[motorD] = 20;
 		wait1Msec(4500);
 		motor[motorD] = 0;
+
+		eraseDisplay();
+		displayString(8, "TEST");
+		wait1Msec(10000);
 	}
 }
 
@@ -240,16 +244,22 @@ void reset(float yTogo, float xTogo)
 
 bool playAgain()
 {
-	displayString(8, "Would you like to play again?");
-	displayString(9, "Press enter for yes and");
-	displayString(10, "any other button for no");
+	bool status = false;
 
-	if (getButtonPress(buttonEnter))
+	while (!getButtonPress(buttonAny))
 	{
-		return true;
+		displayString(8, "Would you like to play again?");
+		displayString(9, "Press enter for yes and");
+		displayString(10, "any other button for no");
+
+		if (getButtonPress(buttonEnter))
+		{
+			status = true;
+		}
+		else
+			status = false;
 	}
-	else
-		return false;
+	return status;
 }
 
 bool gameMode()// returns true if the user wants to race the robot
@@ -412,29 +422,29 @@ task main()
 	  	displayString(2,"Black | White | Red | Blue");
 	  	displayString(3,"Selected Colour : Black");
 
-			//while (colourChosenNum != 404 || plays == true)
-			//{
-				colourChosenNum = startup(colours, coloursPicked);
-				while(colourChosenNum == 400)
-			  {
-			    wait1Msec(1000);
-			    int newNum = startup(colours,coloursPicked);
-			    colourChosenNum = newNum;
-			  }
-				objectPickup(scanx, scany, powery, powerx, colourChosenNum, isThere);
-				objectTransport(scanx, scany, yTogo, xTogo, isThere);
-				eraseDisplay();
-				displayString(8, "Is the object in the drop");
-				displayString(9, "bin (hit touch sensor");
-				displayString(10, "if yes, any button for no");
-				displayString(11, "then hit any button)");
+			colourChosenNum = startup(colours, coloursPicked);
+			while(colourChosenNum == 400)
+		  {
+		    wait1Msec(1000);
+		    int newNum = startup(colours,coloursPicked);
+		    colourChosenNum = newNum;
+		  }
+			objectPickup(scanx, scany, powery, powerx, colourChosenNum, isThere);
+			objectTransport(scanx, scany, yTogo, xTogo, isThere);
+			eraseDisplay();
+			displayString(8, "Is the object in the drop");
+			displayString(9, "bin (hit touch sensor");
+			displayString(10, "if yes, any button for no");
+			displayString(11, "then hit any button)");
+			if (isThere == true)
+			{
 				if(isSuccesful() == false)
 				{
 					reset(yTogo, xTogo);
 				}
-				plays = playAgain();
-			//}
-		}
+			}
+			plays = playAgain();
+	}
 
 		else
 		{
