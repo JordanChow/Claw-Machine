@@ -1,7 +1,7 @@
 
 const int COLOURSIZE = 4;
 const float xMax = 16 * 360 / (4 * PI);
-const float yMax = 6 * 360 / (4 * PI);
+const float yMax = 4.5 * 360 / (4 * PI);
 // radius of wheel = 2cm
 
 int colourLeft(int* colours,int & coloursIndex)
@@ -145,11 +145,11 @@ void objectPickup(int &scanx, int &scany, int powery, int &powerx, int color)
 			motor[motorA] = 0;
 			powerx *= -1;
 			scanx = (4 * PI * nMotorEncoder[motorA]) / 360;
-			scany += 6;
+			scany += 4.5;
 		}
 	}
 
-	if (isThere == 1)
+	if (isThere == true)
 	{
 		motor[motorC] = 15;
 		wait1Msec(1500);
@@ -207,7 +207,7 @@ bool playAgain()
 	displayString(9, "Press enter for yes and");
 	displayString(10, "any other button for no");
 
-	if (getButtonPress(buttonEnter) == true)
+	if (getButtonPress(buttonEnter))
 	{
 		return true;
 	}
@@ -215,18 +215,18 @@ bool playAgain()
 		return false;
 }
 
-int gameMode()// returns true if the user wants to race the robot
+bool gameMode()// returns true if the user wants to race the robot
 {
 	displayString(8, "Would you like to race?");
 	displayString(9, "Press enter for yes and");
 	displayString(10, "any other button for no");
 
-	if (getButtonPress(buttonEnter) == true)
+	if (getButtonPress(buttonEnter))
 	{
-		return 1;
+		return true;
 	}
 	else
-		return 0;
+		return false;
 }
 
 int controls()
@@ -338,21 +338,21 @@ task main()
 	int scanx = 0, scany = 0, powery = -20, powerx = 20;
   int colourChosenNum = 0;
 	int colours[COLOURSIZE] = {1,6,5,2};
-	int playNumber = 1;
+	bool plays = true;
   bool coloursPicked[COLOURSIZE] = {false,false,false,false};
 
   while(SensorValue[S3] > 100)
   {}
 
-	int race = gameMode();// race false signifies that the "race" game mode has not been selected
+	//bool race = gameMode();// race false signifies that the "race" game mode has not been selected
 
-  if (race == 0)
+  if (gameMode() == false)
   {
   	displayString(1,"Please select a colour: ");
   	displayString(2,"Black | White | Red | Blue");
   	displayString(3,"Selected Colour : Black");
 
-		while (colourChosenNum != 404 && playNumber == 1)
+		while (colourChosenNum != 404 && plays == true)
 		{
 			colourChosenNum = startup(colours, coloursPicked);
 			while(colourChosenNum == 400)
@@ -377,7 +377,7 @@ task main()
 				}
 			}
 			if (playAgain() == false)
-				playNumber = -1;
+				plays = false;
 		}
 	}
 
