@@ -6,108 +6,108 @@ const float YMAX = 4.5 * 360 / (4 * PI);
 
 int colourLeft(int* colours,int & coloursIndex)
 {
-    coloursIndex--;
-    if (coloursIndex < 0)
-    {
-        coloursIndex += 4;
-    }
-    int colourChosenNum = 0;
+	coloursIndex--;
+	if (coloursIndex < 0)
+	{
+		coloursIndex += 4;
+	}
+	int colourChosenNum = 0;
 
-    colourChosenNum = colours[coloursIndex];
-    displayString(2,"Black | Red | Blue");
+	colourChosenNum = colours[coloursIndex];
+	displayString(2,"Black | Red | Blue");
 
-    return colourChosenNum;
+	return colourChosenNum;
 }
 
 int colourRight(int *colours,int & coloursIndex)
 {
-    coloursIndex++;
-    if (coloursIndex > 3)
-    {
-        coloursIndex -= 4;
-    }
-    int colourChosenNum = colours[coloursIndex];
-    displayString(2,"Black | Red | Blue");
+	coloursIndex++;
+	if (coloursIndex > 3)
+	{
+		coloursIndex -= 4;
+	}
+	int colourChosenNum = colours[coloursIndex];
+	displayString(2,"Black | Red | Blue");
 
-    return colourChosenNum;
+	return colourChosenNum;
 }
 
 
 int startup(int *colours,bool *coloursPicked)
 {
-    int allColours = 0;
-    int coloursIndex = 0;
-    int colourChosenNum = colours[coloursIndex];
+	int allColours = 0;
+	int coloursIndex = 0;
+	int colourChosenNum = colours[coloursIndex];
 
-    while(!getButtonPress(buttonEnter))
-    {
-        displayString(2,"Black | Red | Blue");
-        if(getButtonPress(buttonLeft))
-        {
-            while(getButtonPress(buttonLeft))
-            {}
-            eraseDisplay();
-            colourChosenNum = colourLeft(colours, coloursIndex);
-            displayString(3,"Selected Colour : ");
-            if (colourChosenNum == 1)
-                displayString(4,"Black");
-            else if (colourChosenNum == 2)
-                displayString(4,"Blue");
-            else
-                displayString(4,"Red");
-        }
+	while(!getButtonPress(buttonEnter))
+	{
+		displayString(2,"Black | Red | Blue");
+		if(getButtonPress(buttonLeft))
+		{
+			while(getButtonPress(buttonLeft))
+			{}
+			eraseDisplay();
+			colourChosenNum = colourLeft(colours, coloursIndex);
+			displayString(3,"Selected Colour : ");
+			if (colourChosenNum == 1)
+				displayString(4,"Black");
+			else if (colourChosenNum == 2)
+				displayString(4,"Blue");
+			else
+				displayString(4,"Red");
+		}
 
-        else if(getButtonPress(buttonRight))
-        {
-            while(getButtonPress(buttonRight))
-            {}
-            eraseDisplay();
-            colourChosenNum = colourRight(colours,coloursIndex);
-            displayString(3,"Selected Colour : ");
-            if (colourChosenNum == 1)
-            {
-                displayString(4,"Black");
-            }
-            else if (colourChosenNum == 2)
-            {
-                displayString(4,"Blue");
-            }
-            else
-            {
-                displayString(4,"Red");
-            }
-        }
-        else if(getButtonPress(buttonUp))
-        {
-            displayString(9,"Please use the left, right");
-            displayString(10,"and center button Only");
-        }
-        else if(getButtonPress(buttonDown))
-        {
-            displayString(9,"Please use the left, right");
-            displayString(10,"and center button Only");
-        }
-    }
-    //colour already chosen error 400
-    if (coloursPicked[coloursIndex] == 1)
-    {
-        eraseDisplay();
-        displayString(9,"Colour already chosen");
-        return 400;
-    }
+		else if(getButtonPress(buttonRight))
+		{
+			while(getButtonPress(buttonRight))
+			{}
+			eraseDisplay();
+			colourChosenNum = colourRight(colours,coloursIndex);
+			displayString(3,"Selected Colour : ");
+			if (colourChosenNum == 1)
+			{
+				displayString(4,"Black");
+			}
+			else if (colourChosenNum == 2)
+			{
+				displayString(4,"Blue");
+			}
+			else
+			{
+				displayString(4,"Red");
+			}
+		}
+		else if(getButtonPress(buttonUp))
+		{
+			displayString(9,"Please use the left, right");
+			displayString(10,"and center button Only");
+		}
+		else if(getButtonPress(buttonDown))
+		{
+			displayString(9,"Please use the left, right");
+			displayString(10,"and center button Only");
+		}
+	}
+	//colour already chosen error 400
+	if (coloursPicked[coloursIndex] == 1)
+	{
+		eraseDisplay();
+		displayString(9,"Colour already chosen");
+		return 400;
+	}
 
-    //all objects are gone error 404
-    coloursPicked[coloursIndex] = true;
-    for (int index = 0; index < 3; index++)
-    {
-        if (coloursPicked[index] == 1)
-            allColours += 1;
-    }
-    if (allColours == 3)
-        return 404; //terminates program
+	//all objects are gone error 404
+	coloursPicked[coloursIndex] = true;
+	for (int index = 0; index < 3; index++)
+	{
+		if (coloursPicked[index] == 1)
+			allColours += 1;
+	}
+	if (allColours == 3)
+		return 404; //terminates program
 
-    else
-        return colourChosenNum; //continues program
+	else
+		return colourChosenNum; //continues program
 }
 
 void objectPickup(int &scanx, int &scany, int powery, int powerx, int color, bool &isThere, int &row)
@@ -116,31 +116,31 @@ void objectPickup(int &scanx, int &scany, int powery, int powerx, int color, boo
 
 	//for (int counter = 0; counter < 2; counter++)
 	//{
-		if (SensorValue[S1] != color) // color is the variable
+	if (SensorValue[S1] != color) // color is the variable
+	{
+		nMotorEncoder[motorB] = 0;
+		while (abs(nMotorEncoder[motorB]) < YMAX)
 		{
-			nMotorEncoder[motorB] = 0;
-			while (abs(nMotorEncoder[motorB]) < YMAX)
-			{
-				motor[motorB] = powery;
-			}
-			motor[motorB] = 0;
-			nMotorEncoder[motorA] = 0;
-			while (abs(nMotorEncoder[motorA]) < XMAX && SensorValue[S1] != color)
-			{
-				motor[motorA] = powerx;
-				if(SensorValue[S1] == color)
-				{
-					wait1Msec(500);
-					isThere = true;
-				}
-			}
-
-			motor[motorA] = 0;
-			//powerx *= -1;
-			scanx = (4 * PI * nMotorEncoder[motorA]) / 360;
-			scany += 4.5;
+			motor[motorB] = powery;
 		}
-		//row++;
+		motor[motorB] = 0;
+		nMotorEncoder[motorA] = 0;
+		while (abs(nMotorEncoder[motorA]) < XMAX && SensorValue[S1] != color)
+		{
+			motor[motorA] = powerx;
+			if(SensorValue[S1] == color)
+			{
+				wait1Msec(500);
+				isThere = true;
+			}
+		}
+
+		motor[motorA] = 0;
+		//powerx *= -1;
+		scanx = (4 * PI * nMotorEncoder[motorA]) / 360;
+		scany += 4.5;
+	}
+	//row++;
 	//}
 
 	if (isThere == true)
@@ -156,10 +156,10 @@ void objectPickup(int &scanx, int &scany, int powery, int powerx, int color, boo
 		while(time1[T1] < 5000) // to be changed after testing
 		{
 			motor[motorD] = -20;
-	  }
-	  motor[motorD] = 0;
+		}
+		motor[motorD] = 0;
 
-	  motor[motorC] = 15;
+		motor[motorC] = 15;
 		wait1Msec(4000);
 		motor[motorC] = 0;
 	}
@@ -237,24 +237,24 @@ void reset(float yTogo, float xTogo)
 
 bool playAgain()
 {
-  bool status = false;
+	bool status = false;
 
-  while (SensorValue[S2] != true)
-  {
-    displayString(8, "Would you like to play again?");
-    displayString(9, "Press touch for yes and");
-    displayString(10, "any other button for no");
-    if (getButtonPress(buttonAny))
-    {
-        return status;
-    }
-    status = false;
-  }
-  status = true;
-  while(!getButtonPress(buttonAny))
-  {
-  }
-  return status;
+	while (SensorValue[S2] != true)
+	{
+		displayString(8, "Would you like to play again?");
+		displayString(9, "Press touch for yes and");
+		displayString(10, "any other button for no");
+		if (getButtonPress(buttonAny))
+		{
+			return status;
+		}
+		status = false;
+	}
+	status = true;
+	while(!getButtonPress(buttonAny))
+	{
+	}
+	return status;
 }
 
 bool gameMode()// returns true if the user wants to race the robot
@@ -274,24 +274,24 @@ bool gameMode()// returns true if the user wants to race the robot
 bool isSuccesful()
 {
 	eraseDisplay();
-  bool status = false;
+	bool status = false;
 
-  while (SensorValue[S2] != true)
-  {
-    displayString(8, "Would you like to play again?");
-    displayString(9, "Press touch for yes and");
-    displayString(10, "any other button for no");
-    if (getButtonPress(buttonAny))
-    {
-        return status;
-    }
-    status = false;
-  }
-  status = true;
-  while(!getButtonPress(buttonAny))
-  {
-  }
-  return status;
+	while (SensorValue[S2] != true)
+	{
+		displayString(8, "Would you like to play again?");
+		displayString(9, "Press touch for yes and");
+		displayString(10, "any other button for no");
+		if (getButtonPress(buttonAny))
+		{
+			return status;
+		}
+		status = false;
+	}
+	status = true;
+	while(!getButtonPress(buttonAny))
+	{
+	}
+	return status;
 }
 
 
@@ -402,35 +402,35 @@ task main()
 	nMotorEncoder[motorA] = nMotorEncoder[motorB] = 0;
 
 	int scanx = 0, scany = 0, powery = -10, powerx = 10, row = 1;
-  int colourChosenNum = 0;
-  float yTogo = 0, xTogo = 0;
+	int colourChosenNum = 0;
+	float yTogo = 0, xTogo = 0;
 	int colours[COLOURSIZE] = {1,5,2};
 	bool plays = true, race = false, isThere = false;
-  bool coloursPicked[COLOURSIZE] = {false,false,false};
+	bool coloursPicked[COLOURSIZE] = {false,false,false};
 
-  while(SensorValue[S3] > 100)
-  {}
+	while(SensorValue[S3] > 100)
+	{}
 
-  while (colourChosenNum != 404 && plays == true)
+	while (colourChosenNum != 404 && plays == true)
 	{
-	  while(!getButtonPress(buttonAny))
-	  {
-	  	race = gameMode();// race false signifies that the "race" game mode has not been selected
-	  }
+		while(!getButtonPress(buttonAny))
+		{
+			race = gameMode();// race false signifies that the "race" game mode has not been selected
+		}
 
-	  if (race == false)
-	  {
-	  	displayString(1,"Please select a colour: ");
-	  	displayString(2,"Black | Red | Blue");
-	  	displayString(3,"Selected Colour : Black");
+		if (race == false)
+		{
+			displayString(1,"Please select a colour: ");
+			displayString(2,"Black | Red | Blue");
+			displayString(3,"Selected Colour : Black");
 
 			colourChosenNum = startup(colours, coloursPicked);
 			while(colourChosenNum == 400)
-		  {
-		    wait1Msec(1000);
-		    int newNum = startup(colours,coloursPicked);
-		    colourChosenNum = newNum;
-		  }
+			{
+				wait1Msec(1000);
+				int newNum = startup(colours,coloursPicked);
+				colourChosenNum = newNum;
+			}
 			objectPickup(scanx, scany, powery, powerx, colourChosenNum, isThere, row);
 			objectTransport(scanx, scany, yTogo, xTogo, isThere, row, powerx);
 			eraseDisplay();
@@ -446,21 +446,21 @@ task main()
 			{
 				reset(yTogo, xTogo);
 			}
-	}
+		}
 
 		else
 		{
 			displayString(1,"Please select a colour: ");
-	 	 	displayString(2,"Black | Red | Blue");
-	  	displayString(3,"Selected Colour : Black");
-	  	colourChosenNum = startup(colours, coloursPicked);
-	  	float userTime = controls()/1000.0;
-	  	eraseDisplay();
-	  	displayString(8, "Your time is %f", userTime);
-	  	displayString(9, "Please return the object");
-	  	wait1Msec(20000);
-	  	eraseDisplay();
-	  	colourChosenNum = startup(colours, coloursPicked);
+			displayString(2,"Black | Red | Blue");
+			displayString(3,"Selected Colour : Black");
+			colourChosenNum = startup(colours, coloursPicked);
+			float userTime = controls()/1000.0;
+			eraseDisplay();
+			displayString(8, "Your time is %f", userTime);
+			displayString(9, "Please return the object");
+			wait1Msec(20000);
+			eraseDisplay();
+			colourChosenNum = startup(colours, coloursPicked);
 			objectPickup(scanx, scany, powery, powerx, colourChosenNum, isThere, row);
 			objectTransport(scanx, scany, yTogo, xTogo, isThere, row, powerx);
 
