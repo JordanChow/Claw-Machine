@@ -13,7 +13,13 @@ Autonomous mode simply prompts the user for a colour, then finds the colour. It 
 Overall, a project used to practice the design and implementation of a Mechatronic System, uses RobotC (a C based language with many similarities to C++ except that it is not object-oriented), and C++
 
 MEMBERS INVOLVED:
-Brandon Goh - Github: https://github.com/GohBig - Linkedin: https://www.linkedin.com/in/brandon-goh/
-Jordan Chow - Github: https://github.com/JordanChow - Linkedin: https://www.linkedin.com/in/jordanchow905/
-Masih Bouriayee - Linkedin: https://www.linkedin.com/in/masih-b-7b8b39127/
-
+Brandon Goh: 
+  - Github: https://github.com/GohBig 
+  - Linkedin: https://www.linkedin.com/in/brandon-goh/
+  
+Jordan Chow: 
+  - Github: https://github.com/JordanChow 
+  - Linkedin: https://www.linkedin.com/in/jordanchow905/
+  
+Masih Bouriayee: 
+  - Linkedin: https://www.linkedin.com/in/masih-b-7b8b39127/
