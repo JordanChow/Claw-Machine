@@ -18,9 +18,9 @@ Brandon Goh:
   - Github: https://github.com/GohBig 
   - Linkedin: https://www.linkedin.com/in/brandon-goh/
   
-Jordan Chow: 
-  - Github: https://github.com/JordanChow 
-  - Linkedin: https://www.linkedin.com/in/jordanchow905/
+Sam Eskandar: 
+  - Github: https://github.com/s6eskand
+  - Linkedin: https://www.linkedin.com/in/sameskandar/
   
 Masih Bouriayee: 
   - Linkedin: https://www.linkedin.com/in/masih-b-7b8b39127/
