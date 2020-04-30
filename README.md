@@ -1,8 +1,8 @@
-Given a group of 4, this is the project we came up with when designing our Mechatronic System
+Given a group of 4, this is the project we came up with when designing our Mechatronic System.
 
-I present: My Autonomous Claw Machine!
+I present: The Autonomous Claw Machine!
 
-The project was made to have two modes, Autonomous retrieval and racing mode
+The project was made to have two modes, Autonomous retrieval and racing mode.
 
 Racing mode gives the user the chance to control the physical system and retrieve the object they have specified from earlier. Their retrieval will be timed and will be checked against the robot.
 After they have finished, they will return the object to its original location, the robot will reset, then use the same algorithm as Autonomous mode to retrieve the object.
@@ -12,7 +12,7 @@ Autonomous mode simply prompts the user for a colour, then finds the colour. It 
 
 Overall, a project used to practice the design and implementation of a Mechatronic System, uses RobotC (a C based functional programming language)
 
-MEMBERS INVOLVED:
+Huge thanks to the members involved:
 
 Brandon Goh: 
   - Github: https://github.com/GohBig 
