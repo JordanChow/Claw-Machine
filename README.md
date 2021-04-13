@@ -1,4 +1,4 @@
-#Autonomous Claw Machine
+## Autonomous Claw Machine
 
 Given a group of 4, this is the project we came up with when designing our Mechatronic System.
 
